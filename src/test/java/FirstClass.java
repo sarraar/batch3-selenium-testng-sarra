@@ -17,7 +17,7 @@ public class FirstClass {
         String card = faker.finance().creditCard();
         System.out.println("card = " + card);
 
-    
+        System.out.println("Github deneme");
     
     }
 }
