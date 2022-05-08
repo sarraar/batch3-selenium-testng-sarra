@@ -6,8 +6,17 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="batch3-selenium-testng" />
+      </profile>
+      <profile name="Annotation profile for Unknown" enabled="true">
+        <sourceOutputDir name="pom.xml/target/generated-sources/annotations" />
+        <sourceTestOutputDir name="pom.xml/target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
         <module name="batch3-selenium-testng-sarra" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="pom.xml" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>
