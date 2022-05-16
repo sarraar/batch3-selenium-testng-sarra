@@ -1,5 +1,6 @@
 package com.eurotech.pages;
 
+import com.eurotech.utilities.ConfigurationReader;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -8,31 +9,45 @@ import org.openqa.selenium.support.FindBys;
 
 public class LoginPage extends BasePage {
 
-    @FindBy(id="user-name")
-    public WebElement usernameInput;
+    @FindBy(name = "email")
+    public WebElement emailInput;
 
-    @FindBy(id="password")
+    @FindBy(name = "password")
     public WebElement passwordInput;
 
-//    @FindBy(id="login-button")
-//    public WebElement loginButton;
+    @FindBy(xpath = "//input[@type='submit']")
+    public WebElement loginBtnLoginPage;
 
-    //bunu VEYA !! bunu bul
-//    @FindAll({
-//            @FindBy(id="login-button"),
-//            @FindBy(name="login-button")
-//    })
-//    public WebElement loginButton;
+    @FindBy(partialLinkText = "Forgot")
+    public WebElement forgotPassword;
 
-    // bunu VE !! bunu bul
-    @FindBys({
-            @FindBy(id="login-button"),
-            @FindBy(name="login-button")
-    })
-    public WebElement loginButton;
+    @FindBy(xpath = "//*[text()='Invalid Credentials!']")
+    public WebElement invalidText;
 
+    public void loginTeacher() {
 
+        String email = ConfigurationReader.get("usernameTeacher");
+        String password = ConfigurationReader.get("passwordTeacher");
 
+        emailInput.sendKeys(email);
+        passwordInput.sendKeys(password);
+        loginBtnLoginPage.click();
+
+    }
+
+    public void login(String username, String password) {
+        emailInput.sendKeys(username);
+        passwordInput.sendKeys(password);
+    }
+
+    public void login2(String username, String password){
+
+        understandBtn.click();
+        loginBtnBasePage.click();
+        emailInput.sendKeys(username);
+        passwordInput.sendKeys(password);
+        loginBtnLoginPage.click();
+    }
 
 
 }
