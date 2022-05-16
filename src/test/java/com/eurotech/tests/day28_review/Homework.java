@@ -1,25 +1,23 @@
 package com.eurotech.tests.day28_review;
 
-import com.eurotech.pages.AddExperience;
-import com.eurotech.pages.DashboardPage;
-import com.eurotech.pages.LoginPage;
-import com.eurotech.pages.RegisterPage;
+import com.eurotech.pages.*;
 import com.eurotech.tests.TestBase;
 import com.eurotech.utilities.ConfigurationReader;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 import static com.eurotech.utilities.BrowserUtils.hover;
 
 public class Homework extends TestBase {
-
     /*
     --Create new user
     --Add new user's info to configuration properties
-
            --> Test 2
           --Login with new user
           --Edit profile ( student,learning, city, skills)
@@ -28,17 +26,15 @@ public class Homework extends TestBase {
           --go back
           --Add experiences
           --Submit
-
-
                             -->Test3
                             --Verify that all user's infos
      */
-    //Stepleri yaz
 
     @Test
-    public void createUser() throws InterruptedException {
+    public void createUser() {
         extentLogger = report.createTest("Create user test");
         RegisterPage registerPage = new RegisterPage();
+        EditProfile editProfile = new EditProfile();
 
         extentLogger.info("Click understand button");
         registerPage.understandBtn.click();
@@ -65,26 +61,26 @@ public class Homework extends TestBase {
         registerPage.createProfile.click();
 
         extentLogger.info("Select professional status");
-        Select select = new Select(registerPage.professionalStatusSelect);
+        Select select = new Select(editProfile.professionalStatusSelect);
         select.selectByVisibleText("Developer");
 
         extentLogger.info("Add company");
-        registerPage.companyInput.sendKeys("Microsoft");
+        editProfile.companyInput.sendKeys("Microsoft");
 
         extentLogger.info("Add website");
-        registerPage.websiteInput.sendKeys("sarra.microsoft.de");
+        editProfile.websiteInput.sendKeys("sarra.microsoft.de");
 
         extentLogger.info("Add location");
-        registerPage.locationInput.sendKeys("LA");
+        editProfile.locationInput.sendKeys("LA");
 
         extentLogger.info("Add skills");
-        registerPage.skillsInput.sendKeys("HTML,CSS,JavaScript,PHP");
+        editProfile.skillsInput.sendKeys("HTML,CSS,JavaScript,PHP");
 
         extentLogger.info("Add Github username");
-        registerPage.githubusernameInput.sendKeys("sarty");
+        editProfile.githubusernameInput.sendKeys("sarty");
 
         extentLogger.info("Submitted");
-        registerPage.submitBtn.click();
+        editProfile.submitBtn.click();
 
         String expectedMessage = "Welcome Sar";
         String actualMessage = new DashboardPage().welcomeMessage.getText();
@@ -93,9 +89,10 @@ public class Homework extends TestBase {
         Assert.assertEquals(actualMessage, expectedMessage);
 
         extentLogger.pass("User created");
-
     }
 
+    //2. defa calistirildiginda hata veriyor cunku hesap acilmis oldu
+    @Ignore
     @Test
     public void createUser2() {
         RegisterPage registerPage = new RegisterPage();
@@ -110,7 +107,7 @@ public class Homework extends TestBase {
     }
 
     @Test
-    public void loginNewUserAndAddInfo() throws InterruptedException {
+    public void loginNewUserAndAddInfo() {
         extentLogger = report.createTest("Login new user and add info");
         LoginPage loginPage = new LoginPage();
         DashboardPage dashboardPage = new DashboardPage();
@@ -149,37 +146,43 @@ public class Homework extends TestBase {
         extentLogger.info("Click submit button");
         addExperience.submitBtn.click();
 
-        WebElement experienceAdded= driver.findElement(By.xpath("//div[text()='Experience Added']"));
+        WebElement experienceAdded = driver.findElement(By.xpath("//div[text()='Experience Added']"));
         hover(experienceAdded);
         String expectedMessage = "Experience Added";
-        String actualMessage =  experienceAdded.getText();
+        String actualMessage = experienceAdded.getText();
 
         extentLogger.info("Verify that message is " + expectedMessage);
         Assert.assertEquals(actualMessage, expectedMessage);
         extentLogger.pass("Message verified");
-
     }
 
     @Test
     public void verifyUsersInfo() {
         extentLogger = report.createTest("Verify users Info Test");
-        LoginPage loginPage=new LoginPage();
-        DashboardPage dashboardPage=new DashboardPage();
+        LoginPage loginPage = new LoginPage();
+        DashboardPage dashboardPage = new DashboardPage();
 
         extentLogger.info("User logged in");
         loginPage.login2(ConfigurationReader.get("usernameUser"), ConfigurationReader.get("passwordUser"));
 
         String expectedMessage = "QA Engineer";
-        String actualMessage =  dashboardPage.userTitle.getText();
-        extentLogger.info("User title is " +expectedMessage);
+        String actualMessage = dashboardPage.userTitle.getText();
+        extentLogger.info("User title is " + expectedMessage);
         Assert.assertEquals(actualMessage, expectedMessage);
         extentLogger.pass("User title is as expected");
 
         expectedMessage = "2021/01/01 - 2022/01/01";
-        actualMessage =  dashboardPage.timePeriod.getText();
-        extentLogger.info("Time period is " +expectedMessage);
+        actualMessage = dashboardPage.timePeriod.getText();
+        extentLogger.info("Time period is " + expectedMessage);
         Assert.assertEquals(actualMessage, expectedMessage);
         extentLogger.pass("Time period is as expected");
+
+        expectedMessage = "Microsoft QA Engineer 2021/01/01 - 2022/01/01 Delete";
+        actualMessage = dashboardPage.experienceTable.getText();
+        extentLogger.info("Experience table is " + expectedMessage);
+        Assert.assertEquals(actualMessage, expectedMessage);
+        extentLogger.pass("Experience table is as expected");
+
 
     }
 }

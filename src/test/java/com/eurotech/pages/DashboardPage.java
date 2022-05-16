@@ -37,7 +37,7 @@ public class DashboardPage extends BasePage{
     @FindBy(xpath = "(//td[contains(text(),'Microsoft')]/../td)[3]")
     public WebElement timePeriod;
 
-    @FindBy(xpath = "//table[@class='table']")
+    @FindBy(xpath = "//table[@class='table']/tbody/tr")
     public WebElement experienceTable;
 
     @FindBy(xpath = "//*[text()=' Add Experience']")
